@@ -131,7 +131,6 @@ let assert_is_sorted xs =
 let%test_module "Numeric_string compare" =
   (module struct
     let%expect_test _ = assert_is_sorted (List.init 100 ~f:Int.to_string)
-
     let numeric = [ "0"; "1"; "01"; "2"; "09"; "10"; "11"; "100"; "110" ]
     let alpha = [ "a"; "aa"; "aaa"; "ab" ]
 
