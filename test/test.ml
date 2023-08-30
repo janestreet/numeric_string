@@ -5,9 +5,9 @@ module type Comparison_to_test = sig
 end
 
 let assert_is_sorted
-      (type t)
-      (module T : Comparison_to_test with type t = t)
-      (xs : t list)
+  (type t)
+  (module T : Comparison_to_test with type t = t)
+  (xs : t list)
   =
   let ixs = List.mapi xs ~f:(fun i x -> i, x) in
   List.iter (List.cartesian_product ixs ixs) ~f:(fun ((x_pos, x), (y_pos, y)) ->
@@ -108,8 +108,8 @@ module Reference_implementation = struct
     let with_index t = to_component_list t |> List.mapi ~f:(fun i s -> i, s) in
     List.compare
       (fun (i1, s1) (i2, s2) ->
-         assert (i1 = i2);
-         compare_chunk ~numeric:(i1 % 2 = 1) s1 s2)
+        assert (i1 = i2);
+        compare_chunk ~numeric:(i1 % 2 = 1) s1 s2)
       (with_index t1)
       (with_index t2)
   ;;

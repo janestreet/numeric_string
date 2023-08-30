@@ -3,7 +3,6 @@ open Base
 module T = struct
   type t = string [@@deriving sexp]
 
-
   (* The natural way to do this would be to split the input list into a list of chunks and
      then recurse down the list. However, the desire to avoid allocation means we have to
      take a more "direct" approach. *)
