@@ -41,7 +41,8 @@ let%expect_test "verify assert_is_sorted works" =
       (x                   1)
       (y                   2)
       (expected_comparison -1)
-      (actual_comparison   0))) |}];
+      (actual_comparison   0)))
+    |}];
   let module Int_but_wrong_in_one_case = struct
     type t = int [@@deriving sexp_of]
 
@@ -57,7 +58,8 @@ let%expect_test "verify assert_is_sorted works" =
       (x                   3)
       (y                   1)
       (expected_comparison 1)
-      (actual_comparison   -1))) |}]
+      (actual_comparison   -1)))
+    |}]
 ;;
 
 module Reference_implementation = struct
