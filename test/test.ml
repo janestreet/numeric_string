@@ -191,7 +191,7 @@ let%test_module "Numeric_string compare" =
         ; "a200z", "a1000z"
         ]
         ~f:(fun (x, y) ->
-          Expect_test_helpers_core.require_no_allocation [%here] (fun () ->
+          Expect_test_helpers_core.require_no_allocation (fun () ->
             ignore (Numeric_string.compare x x : int);
             ignore (Numeric_string.compare x y : int);
             ignore (Numeric_string.compare y x : int)));
