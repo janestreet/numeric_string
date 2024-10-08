@@ -130,72 +130,70 @@ let assert_is_sorted xs =
   assert_is_sorted (module Reference_implementation) xs
 ;;
 
-let%test_module "Numeric_string compare" =
-  (module struct
-    let%expect_test _ = assert_is_sorted (List.init 100 ~f:Int.to_string)
-    let numeric = [ "0"; "1"; "01"; "2"; "09"; "10"; "11"; "100"; "110" ]
-    let alpha = [ "a"; "aa"; "aaa"; "ab" ]
+module%test [@name "Numeric_string compare"] _ = struct
+  let%expect_test _ = assert_is_sorted (List.init 100 ~f:Int.to_string)
+  let numeric = [ "0"; "1"; "01"; "2"; "09"; "10"; "11"; "100"; "110" ]
+  let alpha = [ "a"; "aa"; "aaa"; "ab" ]
 
-    let%expect_test _ =
-      assert_is_sorted numeric;
-      assert_is_sorted alpha;
-      assert_is_sorted (numeric @ alpha)
-    ;;
+  let%expect_test _ =
+    assert_is_sorted numeric;
+    assert_is_sorted alpha;
+    assert_is_sorted (numeric @ alpha)
+  ;;
 
-    let all_concats =
-      List.fold ~init:[ "" ] ~f:(fun acc strings ->
-        List.cartesian_product acc strings |> List.map ~f:(fun (s1, s2) -> s1 ^ s2))
-    ;;
+  let all_concats =
+    List.fold ~init:[ "" ] ~f:(fun acc strings ->
+      List.cartesian_product acc strings |> List.map ~f:(fun (s1, s2) -> s1 ^ s2))
+  ;;
 
-    let%expect_test _ =
-      print_s [%sexp (all_concats [ [ "a"; "b" ]; [ "1"; "2" ] ] : string list)];
-      [%expect {| (a1 a2 b1 b2) |}]
-    ;;
+  let%expect_test _ =
+    print_s [%sexp (all_concats [ [ "a"; "b" ]; [ "1"; "2" ] ] : string list)];
+    [%expect {| (a1 a2 b1 b2) |}]
+  ;;
 
-    let test pieces = assert_is_sorted ("" :: all_concats pieces)
+  let test pieces = assert_is_sorted ("" :: all_concats pieces)
 
-    let%expect_test _ =
-      test [ alpha; numeric ];
-      test [ numeric; alpha ];
-      test [ alpha; numeric; alpha ];
-      test [ numeric; alpha; numeric ];
-      test [ alpha; numeric; alpha; numeric ];
-      test [ numeric; alpha; numeric; alpha ]
-    ;;
+  let%expect_test _ =
+    test [ alpha; numeric ];
+    test [ numeric; alpha ];
+    test [ alpha; numeric; alpha ];
+    test [ numeric; alpha; numeric ];
+    test [ alpha; numeric; alpha; numeric ];
+    test [ numeric; alpha; numeric; alpha ]
+  ;;
 
-    let%expect_test "Numeric_string.Set" =
-      let test m =
-        let examples =
-          Set.of_list
-            m
-            (all_concats [ [ ""; "a"; "aa"; "b" ]; [ "0"; "2"; "002"; "10" ]; [ "z" ] ])
-          |> Set.to_list
-        in
-        print_s [%sexp (examples : string list)]
+  let%expect_test "Numeric_string.Set" =
+    let test m =
+      let examples =
+        Set.of_list
+          m
+          (all_concats [ [ ""; "a"; "aa"; "b" ]; [ "0"; "2"; "002"; "10" ]; [ "z" ] ])
+        |> Set.to_list
       in
-      test (module String);
-      [%expect
-        "(002z 0z 10z 2z a002z a0z a10z a2z aa002z aa0z aa10z aa2z b002z b0z b10z b2z)"];
-      test (module Numeric_string);
-      [%expect
-        "(0z 2z 002z 10z a0z a2z a002z a10z aa0z aa2z aa002z aa10z b0z b2z b002z b10z)"]
-    ;;
+      print_s [%sexp (examples : string list)]
+    in
+    test (module String);
+    [%expect
+      "(002z 0z 10z 2z a002z a0z a10z a2z aa002z aa0z aa10z aa2z b002z b0z b10z b2z)"];
+    test (module Numeric_string);
+    [%expect
+      "(0z 2z 002z 10z a0z a2z a002z a10z aa0z aa2z aa002z aa10z b0z b2z b002z b10z)"]
+  ;;
 
-    let%expect_test "no allocation" =
-      List.iter
-        [ "a0b1", "a0b1c"
-        ; "abz", "acz"
-        ; "abc1z", "ab01z"
-        ; "a0yz", "a01z"
-        ; "a0z", "a1z"
-        ; "a200z", "a1000z"
-        ]
-        ~f:(fun (x, y) ->
-          Expect_test_helpers_core.require_no_allocation (fun () ->
-            ignore (Numeric_string.compare x x : int);
-            ignore (Numeric_string.compare x y : int);
-            ignore (Numeric_string.compare y x : int)));
-      [%expect ""]
-    ;;
-  end)
-;;
+  let%expect_test "no allocation" =
+    List.iter
+      [ "a0b1", "a0b1c"
+      ; "abz", "acz"
+      ; "abc1z", "ab01z"
+      ; "a0yz", "a01z"
+      ; "a0z", "a1z"
+      ; "a200z", "a1000z"
+      ]
+      ~f:(fun (x, y) ->
+        Expect_test_helpers_core.require_no_allocation (fun () ->
+          ignore (Numeric_string.compare x x : int);
+          ignore (Numeric_string.compare x y : int);
+          ignore (Numeric_string.compare y x : int)));
+    [%expect ""]
+  ;;
+end
