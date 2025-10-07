@@ -12,9 +12,9 @@ open Base
     non-numeric characters, followed by alternating non-empty segments of numeric
     characters and non-numeric characters. Then compare corresponding segments, using
     string comparison on non-numeric segments and integer comparison on numeric segments;
-    if you run out of segments on one side, the shorter segment list compares
-    smaller. (Allowing the initial non-numeric segment to be empty ensures we always
-    compare corresponding segments of the same kind).
+    if you run out of segments on one side, the shorter segment list compares smaller.
+    (Allowing the initial non-numeric segment to be empty ensures we always compare
+    corresponding segments of the same kind).
 
     Leading zeroes in numeric components complicate the above spec a little, since they
     mean two distinct strings can have equal numeric value. The choice we make is to sort
