@@ -6,6 +6,7 @@ bug-reports: "https://github.com/janestreet/numeric_string/issues"
 dev-repo: "git+https://github.com/janestreet/numeric_string.git"
 doc: "https://ocaml.janestreet.com/ocaml-core/latest/doc/numeric_string/index.html"
 license: "MIT"
+x-maintenance-intent: ["(latest)"]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
