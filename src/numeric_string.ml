@@ -47,7 +47,7 @@ module T = struct
     | result -> result
   ;;
 
-  let%template[@mode m = (local, global)] compare t1 t2 =
+  let compare t1 t2 =
     let rec loop t1 t2 i ~previous_chunk_type =
       (* if we reached the end of either string, one is a prefix of the other *)
       if i = String.length t1 || i = String.length t2
@@ -96,5 +96,4 @@ module T = struct
 end
 
 include T
-
-include%template Comparable.Make [@mode local] [@modality portable] (T)
+include Comparable.Make (T)
