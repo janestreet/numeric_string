@@ -1,6 +1,4 @@
-Numeric string comparison
-=========================
-
+# Numeric string comparison
 # Numeric string comparison
 A comparison function (and assorted sets / maps / etc.) for strings
 that sorts numeric fragments of strings according to their numeric

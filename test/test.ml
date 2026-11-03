@@ -1,7 +1,7 @@
 open Core
 
-module type Comparison_to_test = sig
-  type t [@@deriving compare, sexp_of]
+module type%template [@mode m = (local, global)] Comparison_to_test = sig
+  type t [@@deriving (compare [@mode.explicit m]), sexp_of]
 end
 
 let assert_is_sorted
